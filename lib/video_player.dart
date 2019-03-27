@@ -241,6 +241,13 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
           _applyVolume();
           _applyPlayPause();
           break;
+        case 'changedVideo':
+          value = value.copyWith(
+            duration: Duration(milliseconds: map['duration']),
+            size: Size(map['width']?.toDouble() ?? 0.0,
+                map['height']?.toDouble() ?? 0.0),
+          );
+          break;
         case 'completed':
           value = value.copyWith(isPlaying: false);
           _timer?.cancel();
@@ -373,6 +380,21 @@ class VideoPlayerController extends ValueNotifier<VideoPlayerValue> {
     await _channel.invokeMethod(
       'setVolume',
       <String, dynamic>{'textureId': _textureId, 'volume': value.volume},
+    );
+  }
+
+  Future<void> nextVideo(String dataSource) async {
+    if (!value.initialized || _isDisposed) {
+      return;
+    }
+
+    // this._dataSource = dataSource;
+    // TODO(amirh): remove this on when the invokeMethod update makes it to stable Flutter.
+    // https://github.com/flutter/flutter/issues/26431
+    // ignore: strong_mode_implicit_dynamic_method
+    await _channel.invokeMethod(
+      'next',
+      <String, dynamic>{'textureId': _textureId, 'dataSource': dataSource},
     );
   }
 
