@@ -5,7 +5,9 @@ This plugin is a copy of the official plugin "video_player" but it has a method 
 Use nextvideo to change MediaSource
 Only Android
 Only local storage files
-```_controller.nextVideo(video.fileSource);
+```
+_controller.nextVideo(video.fileSource);
+
 ```
 
 # Oficial install:
